@@ -1,5 +1,5 @@
 #include "device_driver.h"
-
+#include <stdexcept>
 #include <vector>
 using std::vector;
 
@@ -9,14 +9,16 @@ DeviceDriver::DeviceDriver(FlashMemoryDevice* hardware) : m_hardware(hardware)
 
 int DeviceDriver::read(long address)
 {
-    vector<int> values;
+    vector<int> nums;
     for (int i = 0; i < 5; i++) {
-        values.push_back((int)(m_hardware->read(address)));
+        nums.push_back((int)(m_hardware->read(address)));
     }
     for (int i = 0; i < 4; i++) {
-        //if(values[i] != values[i+1]) exception
+        if (nums[i] != nums[i + 1]) {
+            throw std::runtime_error("Read Fail with exception");
+        }
     }
-    return values[0];
+    return nums[0];
 }
 
 void DeviceDriver::write(long address, int data)
