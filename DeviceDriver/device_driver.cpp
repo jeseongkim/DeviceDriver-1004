@@ -9,16 +9,14 @@ DeviceDriver::DeviceDriver(FlashMemoryDevice* hardware) : m_hardware(hardware)
 
 int DeviceDriver::read(long address)
 {
-    vector<int> arr;
-    int ret;
+    vector<int> values;
     for (int i = 0; i < 5; i++) {
-        ret = (int)(m_hardware->read(address));
-        arr.push_back(ret);
+        values.push_back((int)(m_hardware->read(address)));
     }
     for (int i = 0; i < 4; i++) {
-        //if(arr[i] != arr[i+1]) exception
+        //if(values[i] != values[i+1]) exception
     }
-    return ret;
+    return values[0];
 }
 
 void DeviceDriver::write(long address, int data)

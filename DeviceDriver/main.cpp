@@ -10,7 +10,7 @@ public:
 };
 
 
-TEST(DeviceDriver, ReadFromHW_Add0) {
+TEST(DeviceDriver, ReadFromHW_With5NormalValue) {
 	MockFlashMemoryDevice mockhardware;
 	EXPECT_CALL(mockhardware, read)
 		.WillRepeatedly(Return(0));
