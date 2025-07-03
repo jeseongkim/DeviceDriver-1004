@@ -8,7 +8,7 @@ class DeviceDriver
 public:
     DeviceDriver(FlashMemoryDevice* hardware);
     virtual int read(long address);
-    void write(long address, int data);
+    virtual void write(long address, int data);
 
 private:
     void checkReadException(std::vector<int>& nums);

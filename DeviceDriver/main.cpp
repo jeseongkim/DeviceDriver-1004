@@ -1,9 +1,30 @@
 #include "gmock/gmock.h"
 #include "device_driver.h"
+#include "application.h"
 
 #include <string>
 using std::string;
 using namespace testing;
+
+class MockDriver : public DeviceDriver {
+public:
+	MockDriver() : DeviceDriver{ nullptr } {}
+	MOCK_METHOD(int, read, (long address), (override));
+	MOCK_METHOD(void, write, (long address, int data), (override));
+};
+
+TEST(TSD, TC1) {
+	MockDriver mockdd;
+	Application app{ &mockdd };
+
+	EXPECT_CALL(mockdd, read)
+		.Times(5);
+	
+	int s = 0x0;
+	int d = 0x4;
+	app.readAndPrint(s, d);
+}
+
 
 class MockFlashMemoryDevice : public FlashMemoryDevice {
 public:
