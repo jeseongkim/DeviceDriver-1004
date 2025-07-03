@@ -7,20 +7,29 @@ DeviceDriver::DeviceDriver(FlashMemoryDevice* hardware) : m_hardware(hardware)
 
 int DeviceDriver::read(long address)
 {
-    vector<int> nums;
-    for (int i = 0; i < 5; i++) {
-        nums.push_back((int)(m_hardware->read(address)));
-    }
-    for (int i = 0; i < 4; i++) {
-        if (nums[i] != nums[i + 1]) {
-            throw ReadFailException("Read Fail with exception");
-        }
-    }
-    return nums[0];
+	vector<int> nums;
+	getReadValueWithMaxReadCount(nums, address);
+	checkReadException(nums);
+	return nums[0];
+}
+
+void DeviceDriver::checkReadException(std::vector<int>& nums)
+{
+	for (int trycount = 1; trycount < READ_TRY_COUNT; trycount++) {
+		if (nums[trycount-1] != nums[trycount]) {
+			throw ReadFailException("Read Fail with exception");
+		}
+	}
+}
+
+void DeviceDriver::getReadValueWithMaxReadCount(std::vector<int>& nums, long address) {
+	for (int trycount = 0; trycount < READ_TRY_COUNT; trycount++) {
+		nums.push_back((int)(m_hardware->read(address)));
+	}
 }
 
 void DeviceDriver::write(long address, int data)
 {
-    // TODO: implement this method
-    m_hardware->write(address, (unsigned char)data);
+	// TODO: implement this method
+	m_hardware->write(address, (unsigned char)data);
 }

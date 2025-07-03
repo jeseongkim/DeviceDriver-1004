@@ -8,8 +8,13 @@ class DeviceDriver
 public:
     DeviceDriver(FlashMemoryDevice* hardware);
     virtual int read(long address);
-    void read5times(std::vector<int>& nums, long address);
     void write(long address, int data);
+
+private:
+    void checkReadException(std::vector<int>& nums);
+    void getReadValueWithMaxReadCount(std::vector<int>& nums, long address);
+
+    const int READ_TRY_COUNT = 5;
 
 protected:
     FlashMemoryDevice* m_hardware;
