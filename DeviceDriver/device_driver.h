@@ -15,6 +15,7 @@ private:
     void getReadValueWithMaxReadCount(std::vector<int>& nums, long address);
 
     const int READ_TRY_COUNT = 5;
+    const int ERASED_STATE = 0xFF;
 
 protected:
     FlashMemoryDevice* m_hardware;
