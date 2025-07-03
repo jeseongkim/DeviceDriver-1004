@@ -27,16 +27,15 @@ public:
 
 	void setAddrProgramed() {
 		EXPECT_CALL(mockhardware, read)
-			.WillOnce(Return(PROGRAMED_STATE))
-			.WillOnce(Return(PROGRAMED_STATE))
-			.WillOnce(Return(PROGRAMED_STATE))
-			.WillOnce(Return(PROGRAMED_STATE))
-			.WillOnce(Return(PROGRAMED_STATE));
+			.WillOnce(Return(0xDD))
+			.WillOnce(Return(0xDD))
+			.WillOnce(Return(0xDD))
+			.WillOnce(Return(0xDD))
+			.WillOnce(Return(0xDD));
 	}
 
 	int address = 0xAD;
 	const int ERASED_STATE = 0xFF;
-	const int PROGRAMED_STATE = 0xDD;
 };
 
 
@@ -62,7 +61,6 @@ TEST_F(DeviceDriverFixture, ReadFromHW_With1Abnormal) {
 TEST_F(DeviceDriverFixture, WriteToHwhNormally) {
 	setAddrErased();
 
-	int data = 0xDD;
 	try {
 		driver.write(address, 0xDD);
 	}
@@ -74,8 +72,7 @@ TEST_F(DeviceDriverFixture, WriteToHwhNormally) {
 TEST_F(DeviceDriverFixture, WriteWithException) {
 	setAddrProgramed();
 
-	int data = 0xDD;
-	EXPECT_THROW(driver.write(address, data), WriteFailException);
+	EXPECT_THROW(driver.write(address, 0xDD), WriteFailException);
 }
 
 
