@@ -56,6 +56,19 @@ TEST_F(DeviceDriverFixture, WriteToHwhNormally) {
 	}
 }
 
+TEST_F(DeviceDriverFixture, WriteWithException) {
+	EXPECT_CALL(mockhardware, read)
+		.Times(5)
+		.WillOnce(Return(0xDD))
+		.WillOnce(Return(0xDD))
+		.WillOnce(Return(0xDD))
+		.WillOnce(Return(0xDD))
+		.WillOnce(Return(0xDD));
+
+	int data = 0xDD;
+	EXPECT_THROW(driver.write(address, data), WriteFailException);
+}
+
 
 
 

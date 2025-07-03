@@ -32,6 +32,7 @@ void DeviceDriver::write(long address, int data)
 {
 	int readData = read(address);
 	if (readData == ERASED_STATE) {
-		m_hardware->write(address, (unsigned char)data);
+		return m_hardware->write(address, (unsigned char)data);
 	}
+	throw WriteFailException("Write Fail with exception");
 }
