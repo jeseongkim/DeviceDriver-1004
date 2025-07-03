@@ -30,9 +30,13 @@ void DeviceDriver::getReadValueWithMaxReadCount(std::vector<int>& nums, long add
 
 void DeviceDriver::write(long address, int data)
 {
+	checkWriteException(address);
+	return m_hardware->write(address, (unsigned char)data);
+}
+
+void DeviceDriver::checkWriteException(long address) {
 	int readData = read(address);
-	if (readData == ERASED_STATE) {
-		return m_hardware->write(address, (unsigned char)data);
+	if (readData != ERASED_STATE) {
+		throw WriteFailException();
 	}
-	throw WriteFailException();
 }

@@ -13,7 +13,7 @@ public:
 private:
     void checkReadException(std::vector<int>& nums);
     void getReadValueWithMaxReadCount(std::vector<int>& nums, long address);
-
+    void checkWriteException(long address);
     const int READ_TRY_COUNT = 5;
     const int ERASED_STATE = 0xFF;
 

@@ -75,9 +75,6 @@ TEST_F(DeviceDriverFixture, WriteWithException) {
 	EXPECT_THROW(driver.write(address, 0xDD), WriteFailException);
 }
 
-
-
-
 int main() {
 	::testing::InitGoogleMock();
 	return RUN_ALL_TESTS();
