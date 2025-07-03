@@ -13,7 +13,7 @@ public:
 
 class DeviceDriverFixture : public Test {
 public:
-	MockFlashMemoryDevice mockhardware;
+	NiceMock<MockFlashMemoryDevice> mockhardware;
 	DeviceDriver driver{ &mockhardware };
 
 	void setAddrErased() {
