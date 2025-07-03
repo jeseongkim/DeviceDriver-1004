@@ -13,16 +13,21 @@ public:
 	MOCK_METHOD(void, write, (long address, int data), (override));
 };
 
-TEST(TSD, TC1) {
+class ApplicationFixture : public Test {
+public:
 	MockDriver mockdd;
 	Application app{ &mockdd };
 
+	int startAddr = 0x0;
+	int endAddr = 0x4;
+};
+
+TEST_F(ApplicationFixture, readAndPrintNormally) {
 	EXPECT_CALL(mockdd, read)
-		.Times(5);
+		.Times(5)
+		.WillRepeatedly(Return(0));
 	
-	int s = 0x0;
-	int d = 0x4;
-	app.readAndPrint(s, d);
+	app.readAndPrint(startAddr, endAddr);
 }
 
 
