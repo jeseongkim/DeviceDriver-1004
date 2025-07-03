@@ -21,18 +21,6 @@ protected:
     FlashMemoryDevice* m_hardware;
 };
 
-class ReadFailException : public std::exception {
-public:
-    explicit ReadFailException(char const* Message) : std::exception{ Message } {}
-    char const* what() const override {
-        return "Read Fail with exception";
-    }
-};
+class ReadFailException : public std::exception {};
 
-class WriteFailException : public std::exception {
-public:
-    explicit WriteFailException(char const* Message) : std::exception{ Message } {}
-    char const* what() const override {
-        return "Write Fail with exception";
-    }
-};
+class WriteFailException : public std::exception {};

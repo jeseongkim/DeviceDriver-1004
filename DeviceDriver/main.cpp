@@ -9,16 +9,34 @@ class MockFlashMemoryDevice : public FlashMemoryDevice {
 public:
 	MOCK_METHOD(unsigned char, read, (long address), (override));
 	MOCK_METHOD(void, write, (long address, unsigned char data), (override));
-
 };
 
 class DeviceDriverFixture : public Test {
-
 public:
 	MockFlashMemoryDevice mockhardware;
 	DeviceDriver driver{ &mockhardware };
 
+	void setAddrErased() {
+		EXPECT_CALL(mockhardware, read)
+			.WillOnce(Return(ERASED_STATE))
+			.WillOnce(Return(ERASED_STATE))
+			.WillOnce(Return(ERASED_STATE))
+			.WillOnce(Return(ERASED_STATE))
+			.WillOnce(Return(ERASED_STATE));
+	}
+
+	void setAddrProgramed() {
+		EXPECT_CALL(mockhardware, read)
+			.WillOnce(Return(PROGRAMED_STATE))
+			.WillOnce(Return(PROGRAMED_STATE))
+			.WillOnce(Return(PROGRAMED_STATE))
+			.WillOnce(Return(PROGRAMED_STATE))
+			.WillOnce(Return(PROGRAMED_STATE));
+	}
+
 	int address = 0xAD;
+	const int ERASED_STATE = 0xFF;
+	const int PROGRAMED_STATE = 0xDD;
 };
 
 
@@ -42,28 +60,19 @@ TEST_F(DeviceDriverFixture, ReadFromHW_With1Abnormal) {
 }
 
 TEST_F(DeviceDriverFixture, WriteToHwhNormally) {
-	EXPECT_CALL(mockhardware, read)
-		.Times(5)
-		.WillRepeatedly(Return(0xFF));
+	setAddrErased();
 
 	int data = 0xDD;
-	
 	try {
 		driver.write(address, 0xDD);
 	}
-	catch(WriteFailException& e){
+	catch(std::exception& e){
 		FAIL();
 	}
 }
 
 TEST_F(DeviceDriverFixture, WriteWithException) {
-	EXPECT_CALL(mockhardware, read)
-		.Times(5)
-		.WillOnce(Return(0xDD))
-		.WillOnce(Return(0xDD))
-		.WillOnce(Return(0xDD))
-		.WillOnce(Return(0xDD))
-		.WillOnce(Return(0xDD));
+	setAddrProgramed();
 
 	int data = 0xDD;
 	EXPECT_THROW(driver.write(address, data), WriteFailException);

@@ -17,7 +17,7 @@ void DeviceDriver::checkReadException(std::vector<int>& nums)
 {
 	for (int trycount = 1; trycount < READ_TRY_COUNT; trycount++) {
 		if (nums[trycount-1] != nums[trycount]) {
-			throw ReadFailException("Read Fail with exception");
+			throw ReadFailException();
 		}
 	}
 }
@@ -34,5 +34,5 @@ void DeviceDriver::write(long address, int data)
 	if (readData == ERASED_STATE) {
 		return m_hardware->write(address, (unsigned char)data);
 	}
-	throw WriteFailException("Write Fail with exception");
+	throw WriteFailException();
 }
