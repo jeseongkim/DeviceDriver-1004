@@ -39,9 +39,11 @@ TEST(DeviceDriver, ReadFromHW_With1Abnormal) {
 		EXPECT_EQ(0, data);
 		FAIL(); //Exception이 발생할 예정이기에, FAIL() 함수에 도달하지 않는다.
 	}
-	catch (std::runtime_error& e) {
+	catch (ReadFailException& e) {
 		//assert
 		EXPECT_EQ(string{ e.what() }, string{ "Read Fail with exception" });
+	}
+	catch (std::runtime_error& e) {
 	}
 
 }

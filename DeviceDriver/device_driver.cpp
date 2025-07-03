@@ -1,6 +1,4 @@
 #include "device_driver.h"
-#include <stdexcept>
-#include <vector>
 using std::vector;
 
 DeviceDriver::DeviceDriver(FlashMemoryDevice* hardware) : m_hardware(hardware)
@@ -15,7 +13,7 @@ int DeviceDriver::read(long address)
     }
     for (int i = 0; i < 4; i++) {
         if (nums[i] != nums[i + 1]) {
-            throw std::runtime_error("Read Fail with exception");
+            throw ReadFailException("Read Fail with exception");
         }
     }
     return nums[0];
