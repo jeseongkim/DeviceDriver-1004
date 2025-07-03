@@ -26,8 +26,16 @@ TEST_F(ApplicationFixture, readAndPrintNormally) {
 	EXPECT_CALL(mockdd, read)
 		.Times(5)
 		.WillRepeatedly(Return(0));
-	
+
 	app.readAndPrint(startAddr, endAddr);
+}
+
+TEST_F(ApplicationFixture, writeAllNormally) {
+	EXPECT_CALL(mockdd, write)
+		.Times(5);
+
+	int value = 3;
+	app.writeAll(value);
 }
 
 
